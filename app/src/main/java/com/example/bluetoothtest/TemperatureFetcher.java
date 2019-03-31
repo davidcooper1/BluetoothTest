@@ -47,8 +47,11 @@ public class TemperatureFetcher {
     private Runnable connectRunnable;
     private Runnable connectingRunnable;
 
+    // Used for synchronization of the data propery.
+    private ReentrantLock dataLock;
+
     // Data string from bluetooth device.
-    public String data;
+    private String data;
 
     // Captures events related to bluetooth device discovery.
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -112,6 +115,7 @@ public class TemperatureFetcher {
         filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         callbackLock = new ReentrantLock();
+        dataLock = new ReentrantLock();
     }
 
     // Checks if LaMeater was already paired if not try to find and connect to it.
@@ -225,6 +229,27 @@ public class TemperatureFetcher {
         }
     }
 
+    public String getData() {
+        dataLock.lock();
+        String result;
+        try {
+            result = new String(data);
+        } finally {
+            dataLock.unlock();
+        }
+
+        return result;
+    }
+
+    public void setData(String value) {
+        dataLock.lock();
+        try {
+            data = value;
+        } finally {
+            dataLock.unlock();
+        }
+    }
+
     private class ConnectThread extends Thread {
 
         private final BluetoothSocket socket;
@@ -311,7 +336,7 @@ public class TemperatureFetcher {
             while(true) {
                 try {
                     final String line = input.next();
-                    data = line;
+                    setData(line);
                     Log.d("DATA", (new Date()).toString());
                     attemptCallback(CALLBACK_DATA_RECEIVED);
                 } catch (Exception e) {

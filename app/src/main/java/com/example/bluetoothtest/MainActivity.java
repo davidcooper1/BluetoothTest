@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 temp.post(new Runnable() {
                     public void run() {
-                        temp.setText(fetcher.data);
+                        temp.setText(fetcher.getData());
                     }
                 });
             }
