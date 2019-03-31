@@ -1,12 +1,12 @@
 # BluetoothTest
 Simple bluetooth test for school project.
 
-## Creating a new TemperatureFetcher:
+## Creating a New TemperatureFetcher:
 ```java
 TemperatureFetcher fetcher = new TemperatureFetcher();
 ```
 
-## Setting a callback function:
+## Setting a Callback Function:
 ```java
 fetcher.setCallback(callbackId, callbackRunnable);
 ```
@@ -17,4 +17,8 @@ Setting a callback disables callbacks until re-enabled.
 ## Enabling/Disabling Callbacks:
 ```java
 fetcher.setCallbacksEnabled(bool)
+```
+## Checking Bluetooth Data:
+``` java
+fetcher.getData()
 ```
