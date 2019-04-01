@@ -57,11 +57,12 @@ public class TemperatureFetcher {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-
+            Log.d("ACTION", action);
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) { // A bluetooth device's broadcast was received.
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String deviceName = device.getName();
+                Log.d("DISCOVERY", device.getName() + " : " + device.getAddress());
                 if (deviceName != null && deviceName.equals("LaMeater")) {
                     int state = device.getBondState();
                     if (state == BluetoothDevice.BOND_NONE) { // LaMeater was found but not previously connected.
